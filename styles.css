@@ -1,16 +1,415 @@
-body {
-  margin: 0;
-  padding: 2rem;
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
-  color: #1a1a1a;
+@font-face {
+  font-family: "Patrick Hand";
+  src: url("./assets/fonts/PatrickHand-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-main {
-  max-width: 40rem;
-  margin: 0 auto;
+:root {
+  color-scheme: light;
+
+  --fg: #222;
+  --accent: #ff7a5c;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  color: var(--fg);
+  background: #d6f0fa;
+  transition: color 0.2s ease;
+}
+
+h1,
+h2,
+.restart-btn,
+.scroll-cue {
+  font-family: "Patrick Hand", "Comic Sans MS", cursive;
 }
 
 a {
-  color: #0b5fff;
+  color: var(--accent);
+}
+
+main {
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+#ocean-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+
+  --bg-top: #d6f0fa;
+  --bg-bottom: #bce3f2;
+
+  background: linear-gradient(to bottom, var(--bg-top), var(--bg-bottom));
+}
+
+/* Decorative seaweed clumps anchored to the sea floor. Same clump artwork on
+   both sides, mirrored with scaleX so it reads as two plants rather than an
+   obvious copy-paste. Their green is a fixed colour (like every organism's
+   flat fill) rather than currentColor, since seaweed stays green whether the
+   page's ink is currently black or white. */
+.seaweed {
+  position: absolute;
+  bottom: -1rem;
+  width: 90px;
+  height: 150px;
+  opacity: 0.55;
+}
+
+.seaweed-left {
+  left: 1rem;
+}
+
+.seaweed-right {
+  right: 1rem;
+  transform: scaleX(-1);
+}
+
+@media (width >= 900px) {
+  .seaweed {
+    width: 130px;
+    height: 220px;
+  }
+}
+
+/* Bubbles drift slowly upward and sway, scattered near the edges so they
+   never sit over the centred content column. currentColor ties their
+   outline to --fg, the same black/white switch every other illustration's
+   outline already follows. */
+.bubble {
+  position: absolute;
+  opacity: 0.35;
+  animation: bubble-drift 9s ease-in-out infinite;
+}
+
+.bubble-1 {
+  left: 6%;
+  bottom: 10%;
+  width: 22px;
+  height: 22px;
+  animation-delay: 0s;
+}
+
+.bubble-2 {
+  left: 3%;
+  bottom: 40%;
+  width: 14px;
+  height: 14px;
+  animation-delay: 1.5s;
+}
+
+.bubble-3 {
+  left: 10%;
+  bottom: 65%;
+  width: 18px;
+  height: 18px;
+  animation-delay: 3s;
+}
+
+.bubble-4 {
+  right: 5%;
+  bottom: 20%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 0.8s;
+}
+
+.bubble-5 {
+  right: 9%;
+  bottom: 50%;
+  width: 15px;
+  height: 15px;
+  animation-delay: 2.3s;
+}
+
+.bubble-6 {
+  right: 4%;
+  bottom: 75%;
+  width: 24px;
+  height: 24px;
+  animation-delay: 4s;
+}
+
+@keyframes bubble-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(4px, -16px);
+  }
+}
+
+.intro,
+.closing {
+  position: relative;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.intro > *,
+.closing > * {
+  max-width: 34rem;
+}
+
+.intro h1,
+.closing h2 {
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  margin: 0 0 1rem;
+}
+
+.intro p,
+.closing p {
+  background: rgb(255 255 255 / 55%);
+  border-radius: 1.2rem;
+  padding: 0.9rem 1.4rem;
+  backdrop-filter: blur(2px);
+}
+
+.lede-emphasis {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1.15em;
+}
+
+/* Two classes beats the ".intro p" rule above it in specificity, so this
+   line drops the frosted-glass chip the plain intro paragraphs get. */
+.intro .lede-emphasis {
+  background: none;
+  padding: 0;
+  backdrop-filter: none;
+}
+
+@media (width >= 900px) {
+  .intro .lede {
+    max-width: none;
+    white-space: nowrap;
+  }
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.6rem;
+  opacity: 0.75;
+  animation: bounce 1.6s ease-in-out infinite;
+}
+
+/* Two classes beats the ".intro p" rule above it in specificity, so this
+   drops the frosted-glass chip the plain intro paragraphs get. */
+.intro .scroll-cue {
+  background: none;
+  padding: 0;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(0.4rem);
+  }
+}
+
+.journey {
+  position: relative;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.energy-readout {
+  position: absolute;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  text-align: center;
+}
+
+.energy-label {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fg);
+  opacity: 0.7;
+  font-family: "Patrick Hand", "Comic Sans MS", cursive;
+}
+
+.energy {
+  margin: 0.1rem 0 0;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 700;
+  color: var(--fg);
+  font-family: "Patrick Hand", "Comic Sans MS", cursive;
+}
+
+.stage-counter {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  color: var(--fg);
+  opacity: 0.75;
+  z-index: 2;
+}
+
+.track {
+  flex: 1;
+  display: flex;
+  will-change: transform;
+}
+
+.panel {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  box-sizing: border-box;
+}
+
+/* ".panel .connector" (two classes) outranks the ".panel p" rule further
+   down, which would otherwise win on the shared margin/color properties
+   since it also matches every connector paragraph. */
+.panel .connector {
+  max-width: 28rem;
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Tied to --fg (the same black/white the page already switches at the
+   mackerel stage) at half opacity, rather than a fixed grey hex, so it reads
+   as a muted grey against both the pale surface and the deep-sea background
+   without needing its own contrast check at every stage. */
+.connector-label {
+  color: var(--fg);
+  opacity: 0.5;
+}
+
+.illustration {
+  max-width: 100%;
+  transition: width 0.2s ease-out;
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 15%));
+}
+
+.illustration svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.panel h2 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: var(--fg);
+}
+
+.panel p {
+  max-width: 32rem;
+  margin: 0.4rem 0;
+  color: var(--fg);
+}
+
+.stage-percent {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-weight: 600;
+  background: var(--chip-bg, rgb(8 24 44 / 80%));
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  transition: background-color 0.2s ease;
+}
+
+/* Two classes beats the ".panel p { color: var(--fg) }" rule below it in
+   specificity, so the chip's own color wins instead of silently inheriting
+   the page's black/white text swap and going unreadable on its dark pill. */
+.panel .stage-percent {
+  color: var(--chip-fg, #f0f7fa);
+}
+
+.restart-btn {
+  margin-top: 1.5rem;
+  font-size: 1.3rem;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 999px;
+  padding: 0.7rem 1.8rem;
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgb(0 0 0 / 15%);
+}
+
+.restart-btn:hover {
+  filter: brightness(1.05);
+}
+
+.restart-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgb(0 0 0 / 15%);
+}
+
+footer.caveat {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgb(255 255 255 / 92%);
+  border-top: 1px solid rgb(0 0 0 / 10%);
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  text-align: center;
+  color: #1a1a1a;
+  z-index: 3;
+}
+
+footer.caveat p {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    transition: transform 0.3s ease;
+  }
+
+  .scroll-cue {
+    animation: none;
+  }
+
+  .bubble {
+    animation: none;
+  }
 }

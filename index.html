@@ -3,22 +3,88 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMP4020 prototype</title>
+    <title>The Great Energy Chase — an interactive explainer</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header>
-      <nav aria-label="Primary">
-        <a href="./">Home</a>
-      </nav>
-    </header>
+    <div id="ocean-bg" aria-hidden="true">
+      <svg class="seaweed seaweed-left" viewBox="0 0 60 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 100C4 84 20 66 12 52" stroke="#3f8f6a" />
+        <path d="M30 100C18 76 40 50 26 14" stroke="#57a67c" />
+        <path d="M46 100C36 80 54 58 42 32" stroke="#3f8f6a" />
+      </svg>
+      <svg class="seaweed seaweed-right" viewBox="0 0 60 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 100C4 84 20 66 12 52" stroke="#3f8f6a" />
+        <path d="M30 100C18 76 40 50 26 14" stroke="#57a67c" />
+        <path d="M46 100C36 80 54 58 42 32" stroke="#3f8f6a" />
+      </svg>
+      <svg class="bubble bubble-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M8 8c-1.5 1.2-2 3-1.2 4.6" />
+      </svg>
+      <svg class="bubble bubble-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M8 8c-1.5 1.2-2 3-1.2 4.6" />
+      </svg>
+      <svg class="bubble bubble-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M8 8c-1.5 1.2-2 3-1.2 4.6" />
+      </svg>
+      <svg class="bubble bubble-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M8 8c-1.5 1.2-2 3-1.2 4.6" />
+      </svg>
+      <svg class="bubble bubble-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M8 8c-1.5 1.2-2 3-1.2 4.6" />
+      </svg>
+      <svg class="bubble bubble-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M8 8c-1.5 1.2-2 3-1.2 4.6" />
+      </svg>
+    </div>
     <main>
-      <h1>COMP4020 prototype</h1>
-      <p data-testid="intro">
-        Replace this with your prototype. This week's brief is on the course website;
-        <code>spec/README.md</code> explains how the checks in this repo relate to it.
-      </p>
+      <section class="intro">
+        <h1>The Great Energy Chase</h1>
+        <p class="lede">
+          Scroll to follow the sun's energy as it moves through a simplified marine food chain.
+        </p>
+        <p class="lede-emphasis">The animals get bigger. The energy gets smaller.</p>
+        <p class="scroll-cue" aria-hidden="true">Scroll ↓</p>
+      </section>
+
+      <section class="journey" id="journey">
+        <div class="stage" id="stage">
+          <div class="energy-readout" aria-hidden="true">
+            <p class="energy-label">Energy</p>
+            <p class="energy" data-testid="energy-percent"></p>
+          </div>
+          <div class="track" id="track"></div>
+          <p class="stage-counter" id="stage-counter" aria-hidden="true"></p>
+        </div>
+      </section>
+
+      <section class="closing">
+        <h2>Bigger animals.<br />Smaller energy.</h2>
+        <p>
+          Ten transfers carried the sun's energy from a scrap of drifting
+          plankton to an orca — and by the end, almost none of it was left.
+        </p>
+        <nav aria-label="Primary">
+          <button type="button" class="restart-btn" id="restart-btn">
+            ↺ Start again
+          </button>
+        </nav>
+      </section>
     </main>
+
+    <footer class="caveat">
+      <p>
+        A simplified model of energy transfer between trophic levels — not a
+        measured or complete food web.
+      </p>
+    </footer>
+
     <script type="module" src="./main.ts"></script>
   </body>
 </html>
